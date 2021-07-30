@@ -261,3 +261,364 @@ here
 
 print "World!!!"
 ```
+
+#### 4. Strings
++ String is another built-in class of Ruby.
++ We can create a String value using bothe double and single quote.
+
+```ruby
+>> "Hello World"
+=> "Hello World"
+>> 'Hello World'
+=> "Hello World"
+>> String.new("Hello World")
+=> "Hello World"
+>> String("Hello World")
+=> "Hello World"
+```
+
+##### Alternative Ruby Quotes
++ Instead of using single quotes or double quotes, we can use the `%` character.
++ Just add a custom string delimiter after the first `%` character to instruct Ruby where the quoted string begins
++ Can also use the `%` with brackets, parenthesis, braces or `<>` signs.
+```ruby
+>> %!Using delimiter is "exclamation mark"!
+=> "Using delimiter is \"exclamation mark\""
+>> %[Using "brackets"]
+=> "Using \"brackets\""
+>> %(Using parenthesis)
+=> "Using parenthesis"
+```
+
++ With `%q` and `%Q` you can start respectively strings that works as delimited single `''` and `""` quotes
++ Each of the them works in the same way of `''` and `""` about escaping their content
++ Both `%q` and `%Q` need a custom delimiter too and can also use the follwing special delimiters: `{}`,`[]`,`()`,`<>`.
+
+```ruby
+>> print %q!Hey we can also do it this way!
+Hey we can do it this way=> nil
+>> print %Q!Hey we can also do it this way!
+Hey we can also do it this way=> nil
+```
+
++ Same as numbers, strings also have different cool methods.
++ Examples:
+
+```ruby
+>> str = "Ruby is amazing!"
+=> "Ruby is amazing!"
+>> str.empty?
+=> false
+>> str.length
+=> 16
+>> str.size
+=> 16
+>> str.start_with?
+=> false
+>> str.end_with?
+=> false
+>> str.start_with? "Ruby"
+=> true
+>> str.end_with? "!"
+=> true
+>> str.clear
+=> ""
+```
+
++ String is an object, we can use many other methods for string. Type `<string>.[tab][tab]` to list all methods. 
+
+```ruby
+?> str.
+str.__id__
+str.__send__
+str.ascii_only?
+str.b
+str.between?
+...
+```
+
++ Ruby offers an interesting way to make a string: `Heredoc`
++ `Heredoc` provides a mechanism for creating free format strings preserving special characters such as new lines and tabs.
++ This is EXETREMELY useful when we want to use multi-line strings with many special characters.
++ `Heredoc` examples:
+
+```ruby
+┌──(root💀jayng)-[~/Desktop/study_ruby]
+└─# pygmentize heredoc_ex.rb                                                                                                                                                                           1 ⚙
+#!/usr/bin/ruby
+
+str = <<END
+This is super long strings
+with multiple lines 
+and different special characters.
+END
+
+print str
+        
+┌──(root💀jayng)-[~/Desktop/study_ruby]
+└─# ruby heredoc_ex.rb                                                                                                                                                                                 1 ⚙
+This is super long strings
+with multiple lines 
+and different special characters.
+
+```
+
+##### String arithmetic
++ Ruby provides different ways to **concatinate** strings:
+	+ `+` notation
+	+ String juxtaposition
+	+ `<<` notation
+	+ `OO`with `concat` method.
+
+```ruby
+>> str = %!"This is "! + '+' + "notation"
+=> "\"This is \"+notation"
+>> print str
+"This is "+notation=> nil
+>> str = %[This is ] "juxtaposition"
+=> "This is juxtaposition"
+>> str = %{This is }.concat("OO notation")
+=> "This is OO notation"
+>> str = "This is " << "<< notation"
+=> "This is << notation"
+```
+
++ With Ruby, can use **repeat** the str multiple times and even **freeze** it so that it won't change.
+
+```ruby
+>> str = "Hello "
+=> "Hello "
+>> str * 5
+=> "Hello Hello Hello Hello Hello "
+>> str.freeze
+=> "Hello "
+>> str << "new string"
+FrozenError (can't modify frozen String: "Hello ")
+```
+
+Note: freeze operates on an object, not on a variable that holds the pointer to the object. It is legal assign a new variable that refers an frozen object.
+
+```ruby
+>> str = "Hello New string" # This will work since we assign new variable.
+```
+
++ We can also check if  an object is frozen with `.frozen?` method.
++ With the `[index]=` method, we can easily change sections of the strings.
+
+```ruby
+>> str = "We are using Python!"
+=> "We are using Python!"
+>> str["Python"]= "Ruby"
+=> "Ruby"
+>> print str
+We are using Ruby!=> nil
+```
+
++ We can also use `sub` and `gsub` to modify the string.
+
+```ruby
+>> str = "I love Python because Python is amazing!!!"
+=> "I love Python because Python is amazing!!!"
+>> str.sub("Python","Ruby")
+=> "I love Ruby because Python is amazing!!!" # -> sub is single substitution
+>> str.gsub("Python","Ruby")
+=> "I love Ruby because Ruby is amazing!!!" # -> gsub is global substitution
+```
+
+Note: `sub` and `gsub` is temporary, to change the original string, we use `sub!` and `gsub!`.
+
+```ruby
+>> str.gsub("Python","Ruby")
+=> "I love Ruby because Ruby is amazing!!!"
+>> str
+=> "I love Python because Python is amazing!!!"
+
+>> str.gsub!("Python","Ruby")
+=> "I love Ruby because Ruby is amazing!!!"
+>> str
+=> "I love Ruby because Ruby is amazing!!!"
+```
+
+Note: if we use `sub!` or `gsub!` on a frozen object, an error will raise.
+
++ We can also insert some text into a specify position of a string specifying the correct index.
+
+```ruby
+>> str = "Hello friends!"
+=> "Hello friends!"
+
+>> str.insert(str.size, " Nice to see you!")
+=> "Hello friends! Nice to see you!"
+```
+
+#### 5. Interpolation
++ Interpolation allows to write Ruby into a string, which means we place any code we want to use in the `#{code}`.
+
+```ruby
+>> str = %!There are #{6*4} hours per day!
+=> "There are 24 hours per day"
+>> str = %!Say #{"Hello " * 3} my friends!
+=> "Say Hello Hello Hello  my friends"
+# Or we can even do this
+>> name = "Jay"
+=> "Jay"
+>> print %!Hi my name is #{name}!
+Hi my name is Jay=> nil
+```
+
+#### 6. Other useful methods
+```ruby
+>> str = "Hey Ruby, I'm learning you!"
+=> "Hey Ruby, I'm learning you!"
+>> str.upcase
+=> "HEY RUBY, I'M LEARNING YOU!"
+>> str.downcase
+=> "hey ruby, i'm learning you!"
+>> str.reverse
+=> "!uoy gninrael m'I ,ybuR yeH"
+>> str.chop
+=> "Hey Ruby, I'm learning you"
+```
+
+#### 7. Array
++ Ruby array is an object that contains other objects which can be accessed using integer indexes. An array can include all types of objects.
++ We can create and edit an array using different styles: from Object Oriented notations to inline notations.
+
+```ruby
+>> my_array = Array.new(2)
+=> [nil, nil]
+>> my_array[0]=1
+=> 1
+>> my_array[1]=2
+=> 2
+>> my_array
+=> [1, 2] 
+
+>> my_array = Array.new(3,"Hello")
+=> ["Hello", "Hello", "Hello"]
+>> my_array[1] = "Hi"
+=> "Hi"
+>> my_array
+=> ["Hello", "Hi", "Hello"]
+
+>> my_array = ["Hello", "Hi"]
+=> ["Hello", "Hi"]
+>> my_array
+=> ["Hello", "Hi"]
+
+>> my_array = []
+=> []
+>> my_array<<1<<2<<3<<4<<5<<6
+=> [1, 2, 3, 4, 5, 6]
+>> my_array
+=> [1, 2, 3, 4, 5, 6]
+```
+
+##### Accessing Array Elements
++ Elements of an array can be accessed by referencing the index of the element or using Array object methods.
+
+```ruby
+>> dow = ["Mon","Tues","Wed","Thurs","Fri","Sat","Sun"]
+=> ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"]
+>> dow[2]
+=> "Wed"
+>> dow[0]
+=> "Mon"
+>> dow[-1]
+=> "Sun"
+>> dow[-2]
+=> "Sat"
+>> dow.at(0)
+=> "Mon"
+>> dow.first
+=> "Mon"
+>> dow.last
+=> "Sun"
+>> dow[1..3]
+=> ["Tues", "Wed", "Thurs"]
+```
+
+##### Multi-typed Array
++ An array can contains different types of objects.
+```ruby
+>> array = ["Hello", 1, 2, "Three"]
+=> ["Hello", 1, 2, "Three"]
+>> array[0].class
+=> String
+>> array[1].class
+=> Integer
+>> array << 2.5
+=> ["Hello", 1, 2, "Three", 2.5]
+>> array.last.class
+=> Float
+```
+
+##### Multi-dimentional Array
++ An array can also contain another array.
+
+```ruby
+>> array = ["Hello", 1, ["small","big"]]
+=> ["Hello", 1, ["small", "big"]]
+>> array << 2.5
+=> ["Hello", 1, ["small", "big"], 2.5]
+>> array = [array]
+=> [["Hello", 1, ["small", "big"], 2.5]]
+```
+
+##### Variables and Array
++ By changing the value of a variable, the value of a **variable object** will be affected as well.
+
+```ruby
+>> var = %!a string!
+=> "a string"
+>> var.object_id
+=> 280
+>> array = [1, var]
+=> [1, "a string"]
+>> array[1].object_id
+=> 280
+>> var.capitalize!
+=> "A string"
+>> array
+=> [1, "A string"]
+>> array[1].upcase!
+=> "A STRING"
+>> var
+=> "A STRING"
+>> var.object_id == array[1].object_id
+=> true
+```
+
+##### Insertions
++ We can install one or more elements in an arbitrary position using `insert` method.
+
+```ruby
+>> a = [1,3,5,7,9]
+=> [1, 3, 5, 7, 9]
+>> a.insert(1,2)
+=> [1, 2, 3, 5, 7, 9]
+>> a.insert(1,2,4)
+=> [1, 2, 4, 2, 3, 5, 7, 9]
+>> a
+=> [1, 2, 4, 2, 3, 5, 7, 9]
+```
+
++ We can also append the elements quickly with `<<` operator.
+
+```ruby
+>> a<<10<<11<<12
+=> [1, 2, 4, 2, 3, 5, 7, 9, 10, 11, 12]
+>> a<<[13,14,15]
+=> [1, 2, 4, 2, 3, 5, 7, 9, 10, 11, 12, [13, 14, 15]]
+```
+
++ It is also possible to use ranges to insert and modify elements in array.
+
+```ruby
+>> a[0..2]= "one", %!two!, %q{three}
+=> ["one", "two", "three"]
+>> a
+=> ["one", "two", "three", 2, 3, 5, 7, 9, 10, 11, 12, [13, 14, 15]]
+```
+
+##### Deletion
