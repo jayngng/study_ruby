@@ -622,3 +622,115 @@ Hi my name is Jay=> nil
 ```
 
 ##### Deletion
++ To delete elements in an array, we can specify array element name (`delete` method).
++ Or use the `delete_at` method by specifying element index.
+```ruby
+>> a = []
+=> []
+>> a<<1<<2<<3<<4<<5
+=> [1, 2, 3, 4, 5]
+>> a<<%!Hello!
+=> [1, 2, 3, 4, 5, "Hello"]
+>> a.delete(1)
+=> 1
+>> a.delete_at(-1)
+=> "Hello"
+>> a
+=> [2, 3, 4, 5]
+```
+
+##### Operations between arrays
++ We can concatenate different arrays using these methods.
+
+```ruby
+>> a = [1,2,3,4,5]
+=> [1, 2, 3, 4, 5]
+>> b = [6,7,8,9,10]
+=> [6, 7, 8, 9, 10]
+>> c = [11,12,13,14,15]
+=> [11, 12, 13, 14, 15]
+
+>> a + b + c # → "Plus" method
+=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+
+>> a.concat(b).concat(c) # → Concat method
+=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+```
+
++ The power of the Ruby is in the operations between sets. We can treat an array as a set and perform operations like:
+
+	+	Union (`|`): concatenates two arrays (removing duplicates)
+	+	Intersection (`&`): only elements that are common to both array return.
+	+	Difference (`-`): returns the first array without elements contain in the second array.
+
+```ruby
+>> a = [1,2,3,4, "A"]
+=> [1, 2, 3, 4, "A"]
+>> b = [1,2,5,6,"A", "B"]
+=> [1, 2, 5, 6, "A", "B"]
+>> a | b
+=> [1, 2, 3, 4, "A", 5, 6, "B"]
+>> a & b
+=> [1, 2, "A"]
+>> a - b
+=> [3, 4]
+```
+
+##### Stack
++ Ruby arrays also  provide `push` and `pop` methods.
++ These two methods work in the same way as the `push` and `pop` used with stacks.
+```ruby
+>> a = [1,2,3,4,5]
+=> [1, 2, 3, 4, 5]
+>> a.pop
+=> 5
+>> a.pop
+=> 4
+>> a.pop
+=> 3
+>> a.push(%!Hello!)
+=> [1, 2, "Hello"]
+>> a
+=> [1, 2, "Hello"]
+```
+
+##### Some useful methods
++ `sort`, `reverse`, `uniq`, `max`, `min`
+
+```ruby
+>> a.sort
+=> [-3, -2, -1, 1, 2, 5, 6, 7]
+>> a.reverse
+=> [7, 6, 5, -3, -2, -1, 2, 1]
+>> a.uniq
+=> [1, 2, -1, -2, -3, 5, 6, 7]
+>> a.max
+=> 7
+>> a.min
+=> -3
+```
+
+#### 8. Array and Strings
++ We can **create strings starting from an array** using `join` method.
+
+```ruby
+>> a = ["Hello", "World", "!!!"]
+=> ["Hello", "World", "!!!"]
+>> a.join(" ")
+=> "Hello World !!!"
+>> a.join("\t")
+=> "Hello\tWorld\t!!!"
+```
+
++ We can create an array from strings using `split` method.
+```ruby
+>> a = %[Hello World !!!]
+=> "Hello World !!!"
+>> a.split(" ")
+=> ["Hello", "World", "!!!"]
+
+>> a = "1::@::#::$::%"
+=> "1::@::#::$::%"
+>> a.split("::")
+=> ["1", "@", "#", "$", "%"]
+```
