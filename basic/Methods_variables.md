@@ -270,3 +270,147 @@ LocalJumpError (no block given (yield))
 >> double(10, square)
 1 4 9 16 25 36 49 64 81 100 => 1..10
 ```
+
+#### 7. Bang methods
++ They are methods that ends with exclamation mark `!`.
++ They should be used with **caution** because they modify the original object that is called.
+
+```ruby
+>> array<<1<<2<<3<<4
+=> [1, 2, 3, 4]
+>> array.map! { |x| x**2}
+=> [1, 4, 9, 16]
+>> array
+=> [1, 4, 9, 16]
+```
+
+#### 8. Returned values
++ Usually programming languages only allows one value to be returned.
++ In Ruby, if we return more than one value, it is implicitly converted to an array.
+
+```ruby
+?> def return_vals
+?>   return 1,2,3,4,5
+>> end
+=> :return_vals
+>> 
+>> result = return_vals
+=> [1, 2, 3, 4, 5]
+>> result
+=> [1, 2, 3, 4, 5]
+```
+
+#### 9. Variables & Scope
++ There are four types of variables in Ruby:
+	+ **local**: visible within a method or block
+	+ **global**: visible throughout a Ruby program
+	+ **instance**: visible within an object instance
+	+ **class**: visible within all class instances
+	+ **constant**: can't be changed
+
+##### Local variables
++ A block of an iterator method defines its own scope, therefore the bindings defined in the block are no longer available outside.
+
+```ruby
+>> (1..10).inject(0) { |summ,x| summ += x }
+=> 55
+>> summ
+Traceback (most recent call last):
+        4: from /usr/bin/irb:23:in `<main>'
+        3: from /usr/bin/irb:23:in `load'
+        2: from /usr/lib/ruby/gems/2.7.0/gems/irb-1.2.6/exe/irb:11:in `<top (required)>'
+        1: from (irb):23
+NameError (undefined local variable or method `summ' for main:Object)
+```
+
+##### Global variables
++ A global variable begins with the `$` special character. It has a global scope, so it can be visible and accessible anywhere in the program.
+
+```ruby
+>> $a = 20
+=> 20
+>> defined? $a
+=> "global-variable"
+>> 
+>> a = 50
+=> 50
+>> defined? a
+=> "local-variable"
+```
+
++ `$` sign is **important**.
+
++ Using global variable may be dangerous and may be indicative of bad programming style.
++ Yu might find it useful to know that Ruby has a number of pre-defined global variables:
+	+ `$*`: array of command line arguments
+	+ `$0`: name of the script being executed
+	+ `$_`: last string read be gets
+	+ There are much more here. https://ruby-doc.org/core-2.0.0/doc/globals_rdoc.html
+
+```ruby
+#!/usr/bin/ruby
+
+puts
+
+# Print name of the script: $0
+puts %!Name of the script: \t#{$0}!
+
+# Print the command line arguments: $*
+puts %!CMD line args: \t#{$*}!
+
+#  Read the lines and print it
+print %!Random line: \t!
+$stdin.gets
+print %!gets: \t#{$_}!
+
+----
+# ./global_variables.rb 1 2 3
+
+Name of the script:     ./global_variables.rb
+CMD line args:  ["1", "2", "3"]
+Random line:    hello
+gets:   hello
+```
+
+##### Instance & Class Variables
++ Class variables begin with `@@` and they are visible by all instances of a class.
++ Instances variables begins with `@`. They are local to specific instances of a class.
+
+##### Constants
++ A constant begins with an uppercase letter (A-Z). They should not be changed after their initialization.
++ However, Ruby allows you to change them but a warning is raised.
+```ruby
+>> CONSTANT = "Hello"
+=> "Hello"
+>> print CONSTANT
+Hello=> nil
+>> 
+>> CONSTANT = "Hi"
+(irb):3: warning: already initialized constant CONSTANT
+(irb):1: warning: previous definition of CONSTANT was here
+=> "Hi"
+>> print CONSTANT
+Hi=> nil
+```
+
++ Moreover, when we fine a constant in a class or a module, it belongs to their namespace.
++ In the example, we can see that we are able to access the constant **A** defined in the **B** by using its namespace **B::A**
+
+```ruby
+>> A = 100
+=> 100
+
+?> module B
+?>   A = 200
+>> end
+=> 200
+>> 
+>> B::A
+=> 200
+>> A
+=> 100
+```
+
++ Some useful constants:
+	+ `ARGV`: holds command line arguments.
+	+ `ENV`: holds information about environement.
